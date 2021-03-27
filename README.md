@@ -1,21 +1,61 @@
-# ListLength
+# List Length
 
-**TODO: Add description**
+O projeto `list_length` é o primeiro desafio da @Rocketseat da Trilha de [Elixir](https://elixir-lang.org/).
 
-## Installation
+O desafio é criar um módulo `ListLength` contendo uma função `call/1` que recebe como argumento uma [Lista](https://hexdocs.pm/elixir/List.html) de números. Essa função deve retornar o tamanho dessa lista.
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `list_length` to your list of dependencies in `mix.exs`:
+Iniciando o projeto
+
+```bash
+mix new list_length
+```
+
+Criando o teste
 
 ```elixir
-def deps do
-  [
-    {:list_length, "~> 0.1.0"}
-  ]
+defmodule ListLengthTest do
+  use ExUnit.Case
+
+  describe "list_length/1" do
+    test "returns the length of a list" do
+      list = [1, 2, 3]
+
+      response = ListLength.call(list)
+
+      expected_response = 3
+
+      assert response == expected_response
+    end
+  end
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/list_length](https://hexdocs.pm/list_length).
+Criando a função usando [recursão](https://elixir-lang.org/getting-started/recursion.html) e com o conceito de _Tail Call Optimization_ ([wikipedia](https://en.wikipedia.org/wiki/Tail_call)):
 
+```elixir
+defmodule ListLength do
+  def call(list), do: list_length(list, 0)
+
+  defp list_length([], acc), do: acc
+
+  defp list_length([_head | tail], acc) do
+    acc = acc + 1
+    list_length(tail, acc)
+  end
+end
+```
+
+Executando o projeto no terminal:
+
+```bash
+iex -S mix
+```
+
+Executando a função:
+
+```elixir
+ListLength.call([1, 3, 6, 43, 6])
+#..> 5
+```
+
+Voilà! 🚀
